@@ -1,47 +1,29 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { Button, TextField, Box, Container } from "@mui/material";
+import Home from "./components/pages/Home";
 
-import { io } from "socket.io-client";
+import FirstRoom from "./components/pages/FirstRoom";
 
-// import Header from "./components/Header";
+import SecondRoom from "./components/pages/SecondRoom";
+
+import ThirdRoom from "./components/pages/ThirdRoom";
+
+import FourRoom from "./components/pages/FourRoom";
 
 function App() {
-  const [socket, setSocket] = useState(null);
-  const [code, setCode] = useState("");
-
-  useEffect(() => {
-    setSocket(io("http://localhost:4000"));
-  }, []);
-
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("code-from-server", (data) => {
-      console.log("code recieved", data);
-    });
-  }, [socket]);
-
-  function handleForm(e) {
-    e.preventDefault();
-    socket.emit("send-code", { code });
-    setCode("");
-  }
-
   return (
-    <div>
-      <Box component="form" onSubmit={handleForm}>
-        <TextField
-          size="small"
-          label="Write your Code"
-          variant="outlined"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-        />
-        <Button variant="text" type="submit">
-          send
-        </Button>
-      </Box>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/FirstRoom" element={<FirstRoom />} />
+          <Route path="/SecondRoom" element={<SecondRoom />} />
+          <Route path="/thirdRoom" element={<ThirdRoom />} />
+          <Route path="/fourRoom" element={<FourRoom />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
